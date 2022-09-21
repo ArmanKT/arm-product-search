@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           //   create: (_) => Arman(),
           // ),
           BlocProvider(
-            create: (context) => ProductsCubit(apiServices: apiService)..fetchPostApi(),
+            create: (context) => ProductsCubit(apiServices: apiService),
           ),
         ],
         child: const SearchPageView(title: 'Arm-Products'),

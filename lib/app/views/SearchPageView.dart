@@ -50,9 +50,8 @@ class _SearchPageViewState extends State<SearchPageView> {
                     onEditingComplete: () {
                       // context.debugDoingBuild
 
-                      context
-                          .read<ProductsCubit>()
-                          .fetchPostApi(searchData: searchValueController.text);
+                      context.read<ProductsCubit>().fetchProductApi(
+                          searchData: searchValueController.text);
                     },
                   ),
                 ),
@@ -61,7 +60,22 @@ class _SearchPageViewState extends State<SearchPageView> {
                 flex: 1,
                 child: BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
-                    if (state is ProductFetchLoading) {
+                    if (state is ProductFetchInitial) {
+                      return Column(
+                        children: [
+                          Container(
+                              color: APP_ORANGE_COLOR,
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(20),
+                              child: const Text(
+                                'Please Search Something Like - Rice, pulses',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ],
+                      );
+                    } else if (state is ProductFetchLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is ProductFetchError) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is ProductFetchError) {
                       return const Text("Error From ProductFetchError");
@@ -75,7 +89,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                                     width: double.infinity,
                                     padding: const EdgeInsets.all(20),
                                     child: const Text(
-                                      'No product Found - Please Search Something',
+                                      'No product Found',
                                       style: TextStyle(color: Colors.white),
                                     )),
                               ],

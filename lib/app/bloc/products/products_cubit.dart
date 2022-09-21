@@ -13,7 +13,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   ProductsCubit({required this.apiServices}) : super(ProductFetchInitial());
 
-  Future<void> fetchPostApi({String? searchData}) async {
+  Future<void> fetchProductApi({String? searchData}) async {
     emit(ProductFetchLoading());
     try {
       final resonseData =
