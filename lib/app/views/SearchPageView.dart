@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../config/appConfig.dart';
+import 'ProductDetailsView.dart';
 
 class SearchPageView extends StatefulWidget {
   const SearchPageView({super.key, required this.title});
@@ -49,7 +50,9 @@ class _SearchPageViewState extends State<SearchPageView> {
                     onEditingComplete: () {
                       // context.debugDoingBuild
 
-                      context.read<ProductsCubit>().fetchPostApi(searchData: searchValueController.text);
+                      context
+                          .read<ProductsCubit>()
+                          .fetchPostApi(searchData: searchValueController.text);
                     },
                   ),
                 ),
@@ -66,18 +69,17 @@ class _SearchPageViewState extends State<SearchPageView> {
                       final productList = state.postList;
                       return productList.isEmpty
                           ? Column(
-                            children: [
-                              Container(
-                                  color: APP_RED_COLOR,
-                                  width: double.infinity,
-                                 
-                                  padding: const EdgeInsets.all(20),
-                                  child: const Text(
-                                    'No product Found - Please Search Something',
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                            ],
-                          )
+                              children: [
+                                Container(
+                                    color: APP_RED_COLOR,
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(20),
+                                    child: const Text(
+                                      'No product Found - Please Search Something',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ],
+                            )
                           : GridView.builder(
                               shrinkWrap: true,
                               gridDelegate:
@@ -93,6 +95,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                                 final SearchProductModel singleItem =
                                     productList[index];
                                 return _buildCard(
+                                    item: singleItem,
                                     name: singleItem.productName,
                                     imgPath: singleItem.image,
                                     price: singleItem.charge!.sellingPrice
@@ -114,11 +117,10 @@ class _SearchPageViewState extends State<SearchPageView> {
   }
 
   Widget _buildCard(
-      {String? name,
+      {SearchProductModel? item,
+      String? name,
       String? price,
       String? imgPath,
-      bool? added = false,
-      bool? isFavorite = false,
       BuildContext? context}) {
     return Stack(
       children: [
@@ -127,11 +129,10 @@ class _SearchPageViewState extends State<SearchPageView> {
               top: 5.0, bottom: 10.0, left: 5.0, right: 5.0),
           child: InkWell(
             onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => CookieDetail(
-              //         assetPath: imgPath,
-              //         cookieprice: price,
-              // cookiename: name)));
+              Navigator.of(context!).push(MaterialPageRoute(
+                  builder: (context) => ProductDetailsView(
+                        productSlug: item.slug.toString(),
+                      )));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -159,17 +160,18 @@ class _SearchPageViewState extends State<SearchPageView> {
                   ),
                   const SizedBox(height: 7.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: Text(name!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.justify,
+                        textAlign: TextAlign.left,
                         style: const TextStyle(
                             color: NATURAL_BLACK_COLOR,
                             // fontFamily: 'Varela',
 
                             fontWeight: FontWeight.bold,
-                            fontSize: 14.0)),
+                            fontSize: 16.0)),
                   ),
                   Padding(
                     padding:
@@ -189,14 +191,14 @@ class _SearchPageViewState extends State<SearchPageView> {
                             const SizedBox(
                               width: 7,
                             ),
-                            Text(price!,
+                            Text('৳ ${item!.charge!.currentCharge}',
                                 style: const TextStyle(
                                     color: APP_PINK_COLOR,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18.0)),
                           ],
                         ),
-                        Text(price,
+                        Text('৳ ${item.charge!.currentCharge}',
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 color: APP_PINK_COLOR,
@@ -207,7 +209,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -223,11 +225,11 @@ class _SearchPageViewState extends State<SearchPageView> {
                             const SizedBox(
                               width: 4,
                             ),
-                            Text(price,
+                            Text('৳ ${item.charge!.sellingPrice}',
                                 style: const TextStyle(
                                     color: APP_GRAY_2,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14.0)),
+                                    fontSize: 16.0)),
                           ],
                         ),
                         Row(
@@ -241,7 +243,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                             const SizedBox(
                               width: 4,
                             ),
-                            Text(price,
+                            Text('৳ ${item.charge!.profit}',
                                 style: const TextStyle(
                                     color: APP_GRAY_2,
                                     fontWeight: FontWeight.bold,
@@ -251,37 +253,27 @@ class _SearchPageViewState extends State<SearchPageView> {
                       ],
                     ),
                   ),
-                  if (added!) ...[
-                    const Icon(Icons.remove_circle_outline,
-                        color: Color(0xFFD17E50), size: 12.0),
-                    const Text('3',
-                        style: TextStyle(
-                            fontFamily: 'Varela',
-                            color: Color(0xFFD17E50),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.0)),
-                    const Icon(Icons.add_circle_outline,
-                        color: Color(0xFFD17E50), size: 12.0),
-                  ]
                 ],
               ),
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            padding: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: APP_ORANGE_COLOR.withOpacity(0.6),
-            ),
-            child: const Text(
-              'স্টকে নেই',
-              style: TextStyle(color: APP_RED_COLOR),
-            ),
-          ),
-        ),
+        item.stock == 0
+            ? Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  padding: const EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: APP_ORANGE_COLOR.withOpacity(0.6),
+                  ),
+                  child: const Text(
+                    'স্টকে নেই',
+                    style: TextStyle(color: APP_RED_COLOR),
+                  ),
+                ),
+              )
+            : const SizedBox.shrink(),
         Align(
             alignment: Alignment.bottomCenter,
             child: Container(
