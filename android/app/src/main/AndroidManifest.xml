@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cyou.arman.arm_product">
+     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="arm_product"
+        android:label="Arm Products"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

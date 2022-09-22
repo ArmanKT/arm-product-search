@@ -8,7 +8,7 @@ class ApiServices {
     String baseUrl;
     if (pageUrl == '') {
       baseUrl =
-          "https://panel.supplyline.network/api/product/search-suggestions/?format=json&limit=10&offset=10&search=$searchValue";
+          "https://panel.supplyline.network/api/product/search-suggestions/?format=json&limit=10&search=$searchValue";
     } else {
       baseUrl = pageUrl!;
     }
