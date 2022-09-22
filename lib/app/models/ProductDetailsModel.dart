@@ -9,8 +9,8 @@ class ProductDetailsModel {
   late final int statusCode;
   late final Data data;
   late final String error;
-  
-  ProductDetailsModel.fromJson(Map<String, dynamic> json){
+
+  ProductDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     statusCode = json['statusCode'];
     data = Data.fromJson(json['data']);
@@ -53,15 +53,15 @@ class Data {
     required this.isSeller,
     required this.isPhone,
     required this.willShowEmi,
-     this.badge,
+    this.badge,
     required this.isActive,
     required this.createdAt,
     required this.updatedAt,
-     this.language,
+    this.language,
     required this.seller,
-     this.combo,
+    this.combo,
     required this.createdBy,
-     this.updatedBy,
+    this.updatedBy,
     required this.category,
     required this.relatedProduct,
     required this.filterValue,
@@ -102,13 +102,13 @@ class Data {
   late final List<int> category;
   late final List<dynamic> relatedProduct;
   late final List<dynamic> filterValue;
-  
-  Data.fromJson(Map<String, dynamic> json){
+
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     brand = Brand.fromJson(json['brand']);
     image = json['image'];
     charge = Charge.fromJson(json['charge']);
-    images = List.from(json['images']).map((e)=>Images.fromJson(e)).toList();
+    images = List.from(json['images']).map((e) => Images.fromJson(e)).toList();
     slug = json['slug'];
     productName = json['product_name'];
     model = json['model'];
@@ -148,7 +148,7 @@ class Data {
     _data['brand'] = brand.toJson();
     _data['image'] = image;
     _data['charge'] = charge.toJson();
-    _data['images'] = images.map((e)=>e.toJson()).toList();
+    _data['images'] = images.map((e) => e.toJson()).toList();
     _data['slug'] = slug;
     _data['product_name'] = productName;
     _data['model'] = model;
@@ -188,15 +188,15 @@ class Brand {
   Brand({
     required this.name,
     required this.image,
-     this.headerImage,
+    this.headerImage,
     required this.slug,
   });
   late final String name;
   late final String image;
   late final Null headerImage;
   late final String slug;
-  
-  Brand.fromJson(Map<String, dynamic> json){
+
+  Brand.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     image = json['image'];
     headerImage = null;
@@ -217,24 +217,24 @@ class Charge {
   Charge({
     required this.bookingPrice,
     required this.currentCharge,
-     this.discountCharge,
+    this.discountCharge,
     required this.sellingPrice,
     required this.profit,
     required this.isEvent,
-     this.eventId,
+    this.eventId,
     required this.highlight,
-     this.highlightId,
+    this.highlightId,
     required this.groupping,
-     this.grouppingId,
-     this.campaignSectionId,
+    this.grouppingId,
+    this.campaignSectionId,
     required this.campaignSection,
-     this.message,
+    this.message,
   });
-  late final int bookingPrice;
-  late final int currentCharge;
+  late final double bookingPrice;
+  late final double currentCharge;
   late final Null discountCharge;
-  late final int sellingPrice;
-  late final int profit;
+  late final double sellingPrice;
+  late final double profit;
   late final bool isEvent;
   late final Null eventId;
   late final bool highlight;
@@ -244,8 +244,8 @@ class Charge {
   late final Null campaignSectionId;
   late final bool campaignSection;
   late final Null message;
-  
-  Charge.fromJson(Map<String, dynamic> json){
+
+  Charge.fromJson(Map<String, dynamic> json) {
     bookingPrice = json['booking_price'];
     currentCharge = json['current_charge'];
     discountCharge = null;
@@ -293,8 +293,8 @@ class Images {
   late final String image;
   late final bool isPrimary;
   late final int product;
-  
-  Images.fromJson(Map<String, dynamic> json){
+
+  Images.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
     isPrimary = json['is_primary'];

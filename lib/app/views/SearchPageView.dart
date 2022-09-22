@@ -1,3 +1,4 @@
+import 'package:arm_product/app/bloc/product_details/product_details_cubit.dart';
 import 'package:arm_product/app/bloc/products/products_cubit.dart';
 import 'package:arm_product/app/models/SearchProductModel.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../config/appConfig.dart';
+import '../services/api_service.dart';
 import 'ProductDetailsView.dart';
 
 class SearchPageView extends StatefulWidget {
@@ -32,10 +34,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                   padding: const EdgeInsets.all(20.0),
                   child: TextField(
                     controller: searchValueController,
-                    
-                     
-                     decoration: const InputDecoration(
-                      
+                    decoration: const InputDecoration(
                       hintText: 'কাঙ্ক্ষিত পণ্যটি খুঁজুন',
                       filled: true,
                       fillColor: Colors.white,
@@ -58,7 +57,7 @@ class _SearchPageViewState extends State<SearchPageView> {
                       context.read<ProductsCubit>().fetchProductApi(
                           url: '', searchData: searchValueController.text);
 
-                          FocusScope.of(context).unfocus();
+                      FocusScope.of(context).unfocus();
                     },
                   ),
                 ),
@@ -193,7 +192,7 @@ class _SearchPageViewState extends State<SearchPageView> {
       String? name,
       String? price,
       String? imgPath,
-      BuildContext? context}) {
+      required BuildContext context}) {
     return Stack(
       children: [
         Padding(
@@ -201,9 +200,12 @@ class _SearchPageViewState extends State<SearchPageView> {
               top: 5.0, bottom: 10.0, left: 5.0, right: 5.0),
           child: InkWell(
             onTap: () {
-              Navigator.of(context!).push(MaterialPageRoute(
-                  builder: (context) => ProductDetailsView(
-                        productSlug: item.slug.toString(),
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BlocProvider.value(
+                        value: ProductDetailsCubit(apiServices: ApiServices()),
+                        child: ProductDetailsView(
+                          productSlug: item.slug.toString(),
+                        ),
                       )));
             },
             child: Container(
