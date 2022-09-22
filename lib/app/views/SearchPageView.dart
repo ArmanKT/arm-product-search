@@ -1,5 +1,6 @@
 import 'package:arm_product/app/bloc/products/products_cubit.dart';
 import 'package:arm_product/app/models/SearchProductModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,11 @@ class _SearchPageViewState extends State<SearchPageView> {
                   padding: const EdgeInsets.all(20.0),
                   child: TextField(
                     controller: searchValueController,
-                    decoration: const InputDecoration(
+                    
+                     
+                     decoration: const InputDecoration(
+                      
+                      hintText: 'কাঙ্ক্ষিত পণ্যটি খুঁজুন',
                       filled: true,
                       fillColor: Colors.white,
                       suffixIcon: Icon(
@@ -51,13 +56,14 @@ class _SearchPageViewState extends State<SearchPageView> {
                       // context.debugDoingBuild
 
                       context.read<ProductsCubit>().fetchProductApi(
-                          searchData: searchValueController.text);
+                          url: '', searchData: searchValueController.text);
+
+                          FocusScope.of(context).unfocus();
                     },
                   ),
                 ),
               ),
               Expanded(
-                flex: 1,
                 child: BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
                     if (state is ProductFetchInitial) {
@@ -123,6 +129,58 @@ class _SearchPageViewState extends State<SearchPageView> {
                   },
                 ),
               ),
+              BlocBuilder<ProductsCubit, ProductsState>(
+                builder: (context, state) {
+                  if (state is ProductFetchLoaded) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: APP_PRIMARY_COLOR_2,
+                                disabledForegroundColor: APP_PRIMARY_COLOR_2),
+                            onPressed: state.pagination![1] == 'null'
+                                ? null
+                                : () {
+                                    if (state.pagination![1] != 'null') {
+                                      context
+                                          .read<ProductsCubit>()
+                                          .fetchProductApi(
+                                              searchData:
+                                                  searchValueController.text,
+                                              url: state.pagination![1]);
+                                    }
+                                  },
+                            child: const Text('Previous'),
+                          ),
+                          // Text('${state.pagination}'),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: APP_PRIMARY_COLOR_2,
+                                disabledForegroundColor: APP_PRIMARY_COLOR_2),
+                            onPressed: state.pagination![0] == 'null'
+                                ? null
+                                : () {
+                                    if (state.pagination![0] != 'null') {
+                                      context
+                                          .read<ProductsCubit>()
+                                          .fetchProductApi(
+                                              searchData:
+                                                  searchValueController.text,
+                                              url: state.pagination![0]);
+                                    }
+                                  },
+                            child: const Text('Next'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              )
             ],
           ),
         ),

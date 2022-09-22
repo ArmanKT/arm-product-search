@@ -13,9 +13,12 @@ class ProductFetchLoading extends ProductsState {}
 
 class ProductFetchLoaded extends ProductsState {
   final List<SearchProductModel> postList;
+ 
+  final List? pagination;
 
   const ProductFetchLoaded({
     required this.postList,
+     this.pagination,
   });
 
   @override

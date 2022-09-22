@@ -4,9 +4,14 @@ class ApiServices {
   // Rice
   // pulses
 
-  getProducts({String? searchValue = ''}) async {
-    String baseUrl =
-        "https://panel.supplyline.network/api/product/search-suggestions/?format=json&limit=10&offset=10&search=$searchValue";
+  getProducts({String? searchValue = '', String? pageUrl = ''}) async {
+    String baseUrl;
+    if (pageUrl == '') {
+      baseUrl =
+          "https://panel.supplyline.network/api/product/search-suggestions/?format=json&limit=10&offset=10&search=$searchValue";
+    } else {
+      baseUrl = pageUrl!;
+    }
 
     final response = await http
         .get(Uri.parse(baseUrl), headers: {'Content-Type': 'application/json'});
