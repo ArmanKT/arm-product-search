@@ -66,6 +66,10 @@ class _SearchPageViewState extends State<SearchPageView> {
                 child: BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
                     if (state is ProductFetchInitial) {
+                   
+                      
+                      // context.read<ProductsCubit>().fetchProductApi(
+                      //     url: '', searchData: '');
                       return Column(
                         children: [
                           Container(

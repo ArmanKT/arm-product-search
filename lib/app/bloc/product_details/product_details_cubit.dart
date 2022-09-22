@@ -19,19 +19,19 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   }) async {
     emit(ProductDetailsLoading());
     // try {
-      final resonseData = await apiServices.getProductBySlug(
-        slugValue: slug,
-      );
+    final resonseData = await apiServices.getProductBySlug(
+      slugValue: slug,
+    );
 
-      final Map<String, dynamic> parsed = json.decode(utf8.decode(resonseData));
+    final Map<String, dynamic> parsed = json.decode(utf8.decode(resonseData));
 
-      var dataProductDetails =
-          ProductDetailsModel.fromJson(jsonDecode(jsonEncode(parsed)));
+    var dataProductDetails =
+        ProductDetailsModel.fromJson(jsonDecode(jsonEncode(parsed)));
 
-      print(dataProductDetails);
-      emit(ProductDetailsLoaded(
-        productDetails: dataProductDetails,
-      ));
+    print(dataProductDetails);
+    emit(ProductDetailsLoaded(
+      productDetails: dataProductDetails,
+    ));
     // }
     //  catch (err) {
     //   if (kDebugMode) {

@@ -246,11 +246,11 @@ class Charge {
   late final Null message;
 
   Charge.fromJson(Map<String, dynamic> json) {
-    bookingPrice = json['booking_price'];
-    currentCharge = json['current_charge'];
+    bookingPrice = json['booking_price'] ?? 0.00;
+    currentCharge = json['current_charge'] ?? 0.00;
     discountCharge = null;
-    sellingPrice = json['selling_price'];
-    profit = json['profit'];
+    sellingPrice = json['selling_price'] ?? 0.00;
+    profit = json['profit'] ?? 0.00;
     isEvent = json['is_event'];
     eventId = null;
     highlight = json['highlight'];
