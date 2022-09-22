@@ -1,6 +1,6 @@
 # arm_product
 
-A new Flutter project.
+About A flutter Product Searching App - Bloc - Cubit
 
 ## Getting Started
 
